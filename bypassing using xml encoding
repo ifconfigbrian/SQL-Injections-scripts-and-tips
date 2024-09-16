@@ -1,0 +1,22 @@
+--------this is an xml from an example at web academy--------------
+-----add one and see the response-----
+
+<storeId>1+1</storeId>
+
+.....now lets try to determine the number of columns returned by the original query
+
+<storeId>1 UNION SELECT NULL</storeId>
+
+....that fails because the attack is detected
+
+........bypassing the firewall or ids/ips
+
+try obfuscating your payload using XML entities. One way to do this is using the Hackvertor extension. Just highlight your input, right-click, then select Extensions > Hackvertor > Encode > dec_entities/hex_entities.
+
+Resend the request and notice that you now receive a normal response from the application. This suggests that you have successfully bypassed the WAF.
+
+.....crafting our exploit........
+
+When you try to return more than one column, the application returns 0 units, implying an error. 
+
+<storeId><@hex_entities>1 UNION SELECT username || '~' || password FROM users<@/hex_entities></storeId>

